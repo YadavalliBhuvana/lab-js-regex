@@ -1,77 +1,97 @@
-/* Fill your code*/
-window.onload = () => document.querySelector(".alert").innerHTML = "Kindly fill this field"
+window.onload = () => (document.querySelector(".alert").innerHTML = "");
+
 function formValidate() {
+  let Form = document.forms["RegForm"];
 
+  let name = Form.Name.value; // get name
+  let address = Form.Address.value; // get address
+  let email = Form.EMail.value; // get email
+  let password = Form.Password.value; //get password
+  let confirmpassword = Form.cPassword.value; //get confirm password
+  let phone = Form.phone.value; // get phone
+  // console.log(name, address, email, password, confirmpassword, phone);
 
-    // get form
-    let Form = document.forms['RegForm']
+  returns = {
+    name: false,
+    address: false,
+    email: false,
+    password: false,
+    confirmpassword: false,
+    phone: false,
+  };
 
-    //get input values
-    let name = Form.Name.value
-    let address = Form.Address.value
-    let email = Form.EMail.value
-    let password = Form.Password.value
-    let confirmpassword = Form.cPassword.value
-    let phone = Form.phone.value
-    // alert(name + address + email + password + confirmpassword + phone)
+  let name_condition = /[a-zA-Z0-9]{8,15}/g;
+  let address_condition = /[a-zA-Z0-9]/g;
+  let email_condition = /[a-zA-Z0-9\,\_]+\@{1}[a-zA-Z0-9]+\.[a-z]{2,3}/g;
+  //   let password_condition = /[A-Z]+[a-z]+[0-9]+[!|@|#|$|%|^|&|*|(|)]/g;
+  let password_condition = /^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/;
+  let phone_condition = /[0-9]{10}/g;
 
+  //test name field
+  if (!name_condition.test(name)) {
+    document.querySelector("#name").innerHTML =
+      "Atleast 8 to 15 characters Required";
+  } else {
+    document.querySelector("#name").innerHTML = "";
+    returns["name"] = true;
+  }
 
-    //set pattern
-    let namepattern = /[a-zA-Z0-9]{8,15}/g
-    let addresspattern = /[a-zA-Z0-9]+/g
-    let emailpattern = /[a-zA-Z0-9\,\_]+\@{1}[a-zA-Z0-9]+\.[a-z]{2,3}$/g
-    let passwordpattern = /[A-Z]+[a-z]+[0-9]+[\!\@\#\$\%\^\&\*\(\)]+/g
-    let phonepattern = /[0-9]{10}/g
+  //test address field
+  if (!address_condition.test(address)) {
+    document.querySelector("#address").innerHTML =
+      "Address should not be empty";
+  } else {
+    document.querySelector("#address").innerHTML = "";
+    returns["address"] = true;
+  }
 
+  //email field
+  if (!email_condition.test(email)) {
+    document.querySelector("#email").innerHTML = "Invalid Email";
+  } else {
+    document.querySelector("#email").innerHTML = "";
+    returns["email"] = true;
+  }
 
-    //test name field
-    if (!namepattern.test(name))
-        document.querySelector("#name").innerHTML = "Atleast 8 to 15 characters Required"
-    else
-        document.querySelector("#name").innerHTML = ""
+  //password  and confirm password field
+  if (!password_condition.test(password)) {
+    document.querySelector("#pwd").innerHTML =
+      "password must contain 1 uppercase letter, 1 lowercase letter, atleast 1 number and atleast 1 symbol";
+  } else {
+    document.querySelector("#pwd").innerHTML = "";
+    returns["password"] = true;
+  }
 
-
-    //test address field
-    if (!addresspattern.test(address))
-        document.querySelector("#address").innerHTML = "Address should not be empty"
-    else
-        document.querySelector("#address").innerHTML = ""
-
-    //email field
-    if (!emailpattern.test(email))
-        document.querySelector("#email").innerHTML = "Invalid Email"
-    else
-        document.querySelector("#email").innerHTML = ""
-
-    //password  and confirm password field
-    if (!passwordpattern.test(password)) {
-        document.querySelector("#pwd").innerHTML = "password must contain 1 uppercase letter, 1 lowercase letter, atleast 1 number and atleast 1 symbol"
-
+  if (confirmpassword.length === 0) {
+    document.querySelector("#cpwd").innerHTML = "Field is empty";
+  } else {
+    if (password != confirmpassword) {
+      document.querySelector("#cpwd").innerHTML = "Password does not match";
+    } else {
+      document.querySelector("#cpwd").innerHTML = "";
+      returns["confirmPassword"] = true;
     }
-    else
-        document.querySelector("#pwd").innerHTML = ""
+  }
 
+  //phone field
+  if (!phone_condition.test(phone)) {
+    document.querySelector("#phone").innerHTML = "Invalid Phone";
+  } else {
+    document.querySelector("#phone").innerHTML = "";
+    returns["phone"] = true;
+  }
 
-    if (confirmpassword.length === 0)
-        document.querySelector("#cpwd").innerHTML = "Field is empty"
-    else {
-        if (password != confirmpassword)
-            document.querySelector("#cpwd").innerHTML = "Password does not match"
-        else
-            document.querySelector("#cpwd").innerHTML = ""
+  return false;
+
+  counts = 0;
+  for (i of returns) {
+    if (returns[i] === true) {
+      counts += 1;
+    } else {
     }
+  }
 
-    //phone field
-    if (!phonepattern.test(phone))
-        document.querySelector("#phone").innerHTML = "Invalid Phone"
-    else
-        document.querySelector("#phone").innerHTML = ""
-
-
-
-
-
-
-
-    return false
+  if (counts === returns.length()) {
+    document.querySelector(".success").innerHTML = "Regex Validation Success";
+  }
 }
